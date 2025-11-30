@@ -357,61 +357,59 @@ void PhysicalDeletion(){
 
 
 void DisplayEmployeelist(){
-	int PageSize=5;
-	int currentPage=1;
-	int totalPage;
-	char type;
-	if(n_Employee==0){
-		printf("Danh sach nhan vien hien dang trong!! \n");
-		return ;
-	}
-	if(n_Employee%PageSize==0){
-		totalPage=n_Employee/PageSize;
-	}else{
-		totalPage = n_Employee/PageSize+1;
-	}
-	while(1){
-		int start = (currentPage-1)*PageSize;
-		int end = start + PageSize; 
-		system("cls");
-		printf("\n====================================================================================");
-		printf("\n");
-		printf("||                                       Page%d                                    ||",currentPage);
-		printf("\n====================================================================================\n");
-		printf("\n");
-				printf("\n-----------------------------Danh sach nhan vien---------------------------------\n");
-				printf("|%-10s|%-20s|%-15s|%-15s|%-15s|\n","MaNV","Ten nhan vien","Chuc vu","Luong co ban","So ngay cong");
-				for(int i=0;i<81;i++){
-					printf("-");
-				}
-				printf("\n");
-				for(int i=start ; i < end ;i++){
-					if(i<n_Employee){
-						printf("|%-10s|%-20s|%-15s|%-15.2f|%-15d|\n",listEmployee[i].empId,listEmployee[i].name,listEmployee[i].position,listEmployee[i].baseSalary,listEmployee[i].workDay);	
-						for(int j=0;j<81;j++){
-						printf("-");
-		       			 }
-						printf("\n");
-					}	
-				}		
-		printf("\n[N].Ve trang sau | [P].Ve trang truoc | [E].Thoat.\n");
-		printf("Nhap:");
-		scanf("%c",&type);
-		while(getchar()!='\n');
-		if(type == 'n' || type == 'N'){
-			if(currentPage < totalPage){
-			 	currentPage++;
-			}
-		}else if(type == 'e' || type == 'E'){
-			return;
-		}else if(type == 'p' || type == 'P'){
-			if(currentPage > 1){
-				currentPage--;
-			}
-		}
-	}
-}
+    int PageSize = 5;
+    int currentPage = 1;
+    int totalPage;
+    if(n_Employee == 0){
+        printf("Danh sach nhan vien hien dang trong!! \n");
+        return;
+    }
+    if(n_Employee % PageSize == 0){
+        totalPage = n_Employee / PageSize;
+    } else {
+        totalPage = n_Employee / PageSize + 1;
+    }
+    
+    while(1){
+        int start = (currentPage - 1) * PageSize;
+        int end = start + PageSize; 
+        system("cls");
+        printf("\n====================================================================================\n");
+        printf("||                                       Page %d/%d                                ||\n", currentPage, totalPage);
+        printf("====================================================================================\n\n");
+        printf("\n-----------------------------Danh sach nhan vien---------------------------------\n");
+        printf("|%-10s|%-20s|%-15s|%-15s|%-15s|\n","MaNV","Ten nhan vien","Chuc vu","Luong co ban","So ngay cong");
+        for(int i = 0; i < 81; i++) printf("-");
+        printf("\n");
 
+        for(int i = start ; i < end ; i++){
+            if(i < n_Employee){
+                printf("|%-10s|%-20s|%-15s|%-15.2f|%-15d|\n",
+                       listEmployee[i].empId,
+                       listEmployee[i].name,
+                       listEmployee[i].position,
+                       listEmployee[i].baseSalary,
+                       listEmployee[i].workDay);  
+                for(int j = 0; j < 81; j++) printf("-");
+                printf("\n");
+            }   
+        }       
+
+        printf("\nNhap trang can xem (1-%d) hoac 0 de thoat: ", totalPage);
+        int pageInput;
+        scanf("%d", &pageInput);
+        while(getchar() != '\n');
+
+        if(pageInput == 0){
+            return;
+        } else if(pageInput >= 1 && pageInput <= totalPage){
+            currentPage = pageInput;
+        } else {
+            printf("Trang khong hop le! Nhan phim enter de tiep tuc...");
+            getchar();
+        }
+    }
+}
 
 void SearchEmployeeByName(){
 	char SearchName[50];
@@ -565,7 +563,7 @@ void TimeKeeping(){
 	
 
 	do{
-		printf("Nhap ngay cham cong:");
+		printf("Nhap ngay cham cong(dd/mm/yyyy):");
 		fgets(Searchdate,sizeof(Searchdate),stdin);
 		Searchdate[strcspn(Searchdate,"\n")]='\0';
 		if(!isValidate(Searchdate) || strlen(Searchdate)==0){
@@ -600,40 +598,72 @@ void TimeKeeping(){
 		
 	printf("Da cham cong thanh cong\n");
 }
-
-
-void  ViewPersenalTimesheet(){
-	char Id_nv[50];
-	do{
-		printf("Nhap ma nhan vien can xem bang luong:");
-		fgets(Id_nv,sizeof(Id_nv),stdin);
-		Id_nv[strcspn(Id_nv,"\n")]='\0';
-		if(strlen(Id_nv)==0 || isAllSpace(Id_nv)){
-			printf("Loi: khong duoc de trong!!\n");
-		}else{
-			if(!DuplicateEmployeeId(Id_nv)){
-				printf("Ma nhan vien khong ton tai !!\n ");
-			}
-		}
-	}while(strlen(Id_nv)==0 || isAllSpace(Id_nv) || !DuplicateEmployeeId(Id_nv));
-	printf("\n+------------Bang cong ca nhan-------------+\n");
-	printf("|%-10s|%-15s|%-15s|\n","LodId","Ngay cham","Trang thai");
-	for(int i=0;i<44;i++){
-		printf("-");
-	}
-	printf("\n");
-	for(int i=0;i<tscount;i++){
-		if(strcmp(tsList[i].empId,Id_nv)==0){	
-		printf("|%-10s|%-15s|%-15s|\n",tsList[i].logId,tsList[i].date,tsList[i].status);	
-		}
-	}
-	for(int i=0;i<44;i++){
-		printf("-");
-		}
-		printf("\n");
-	
-	
+void ViewPersenalTimesheet(){
+    char Id_nv[50];
+    int month;
+    do{
+        printf("Nhap ma nhan vien can xem bang cong: ");
+        fgets(Id_nv, sizeof(Id_nv), stdin);
+        Id_nv[strcspn(Id_nv, "\n")] = '\0';
+        if(strlen(Id_nv)==0 || isAllSpace(Id_nv)){
+            printf("Loi: khong duoc de trong!!\n");
+        }else if(!DuplicateEmployeeId(Id_nv)){
+            printf("Ma nhan vien khong ton tai !!\n");
+        }
+    }while(strlen(Id_nv)==0 || isAllSpace(Id_nv) || !DuplicateEmployeeId(Id_nv));
+    
+    do{
+        printf("Nhap thang muon xem (1-12): ");
+        scanf("%d", &month);
+        if(month < 1 || month > 12){
+            printf("Thang khong hop le! Moi nhap lai.\n");
+        }
+    }while(month < 1 || month > 12);
+    while(getchar()!='\n'); 
+    int daysInMonth;
+    if(month==2){
+        daysInMonth = 28;
+    } else if(month==4 || month==6 || month==9 || month==11){
+        daysInMonth = 30;
+    } else {
+        daysInMonth = 31;
+    }
+    printf("\n+------------Bang cong ca nhan-------------+\n");
+    printf("Thang: %02d\n", month);
+    printf("|%-10s|%-15s|%-15s|\n","LogId","Ngay cham","Trang thai");
+    for(int i = 0; i < 44; i++) printf("-");
+    printf("\n");
+    int found = 0;
+    for(int day=1; day<=daysInMonth; day++){
+        int dayFound = 0;
+        for(int i=0; i<tscount; i++){
+            int d, m, y;
+            if(strcmp(tsList[i].empId, Id_nv) == 0){
+                sscanf(tsList[i].date, "%d/%d/%d", &d, &m, &y);
+                if(d == day && m == month){
+                    printf("|%-10s|%-15s|%-15s|\n",
+                        tsList[i].logId,
+                        tsList[i].date,
+                        tsList[i].status
+                    );
+                    dayFound = 1;
+                    found = 1;
+                    break;
+                }
+            }
+        }
+        if(!dayFound){
+            printf("|%-10s|%02d/%02d/%04d     |%-15s|\n",
+                   "-", day, month, 2025, "Nghi lam");
+        }
+    }
+    for(int i = 0; i < 44; i++) printf("-");
+    printf("\n");
+    if(!found){
+        printf("Khong co du lieu cham cong trong thang %02d ! Tat ca la Nghi lam.\n", month);
+    }
 }
+
 
 
 int isValidate(char date[]){
