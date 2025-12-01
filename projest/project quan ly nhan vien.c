@@ -58,6 +58,7 @@ void SearchEmployeeByName();
 void SortEmployeeListByBaseSalary();
 void TimeKeeping();  
 void ViewPersenalTimesheet();
+void trim(char s[]);
 int isValidName(char *name);
 int hasDigit(char *s);
 int isNumber(const char x[]);
@@ -730,14 +731,28 @@ int isValidate(char date[]){
 	return 1;
 }
 
-int DuplicateEmployeeId(char Id[]){
-	for(int i=0 ;i<n_Employee;i++){
-		if(strcmp(listEmployee[i].empId,Id)==0){
-			return 1;
-		}
-	}
-	return 0;
+int DuplicateEmployeeId(char Id[]) {
+    trim(Id);
+    if(strlen(Id) == 0 || isAllSpace(Id)) return 0;
+
+    for(int i = 0; i < n_Employee; i++) {
+        if(strcmp(listEmployee[i].empId, Id) == 0) {
+            return 1;
+        }
+    }
+    return 0;
 }
+void trim(char s[]) {
+    int len = strlen(s);
+    while(len > 0 && s[len-1] == ' ') {
+        s[--len] = '\0';
+    }
+    int start = 0;
+    while(s[start] == ' ') start++;
+
+    if(start > 0) memmove(s, s + start, strlen(s + start) + 1);
+}
+
 
 
 int isAllSpace(char c[]) {
