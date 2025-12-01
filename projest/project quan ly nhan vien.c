@@ -168,10 +168,10 @@ void CreateNewEmployee(){
 			fgets(s.empId,sizeof(s.empId),stdin);
 			s.empId[strcspn(s.empId,"\n")]='\0';
 			if(strlen(s.empId)==0 || isAllSpace(s.empId)){
-				printf("Voi chua nhap empId !!!\n");
+				printf("Loi: chua nhap empId !!!\n");
 			}else{
 				if(DuplicateEmployeeId(s.empId)){
-					printf("Loi empId bi trung !!\n");
+					printf("Loi: empId bi trung !!\n");
 				}
 			}
 		}while(strlen(s.empId)==0 || isAllSpace(s.empId) || DuplicateEmployeeId(s.empId));
@@ -181,7 +181,7 @@ void CreateNewEmployee(){
 			fgets(s.name,sizeof(s.name),stdin);
 			s.name[strcspn(s.name,"\n")]='\0';
 			if(strlen(s.name)==0 || isAllSpace(s.name)){
-				printf("Loi chua nhap ten nhan vien !!\n");
+				printf("Loi: chua nhap ten nhan vien !!\n");
 			}else{
 				if(!isValidName(s.name)){
 					printf("Vui long nhap lai ten nhan vien!\n");
@@ -468,6 +468,8 @@ void SortEmployeeListByBaseSalary(){
 	}
 	while(1){
 		system("cls");
+		while(1){
+		system("cls");
 		printf("Chon kieu sap xep theo bang luong :\n");
 		printf("\n+----Menu---+");
 		printf("\n|0.Thoat!   |");
@@ -495,6 +497,24 @@ void SortEmployeeListByBaseSalary(){
 					}
 				}
 					printf("Da sap xep tang dan thanh cong \n");
+					printf("\n----------------------------- Danh sach nhan vien ---------------------------------\n");
+			        printf("|%-10s|%-20s|%-15s|%-15s|%-15s|\n","MaNV","Ten nhan vien","Chuc vu","Luong co ban","So ngay cong");
+			        for(int k=0;k<81;k++) printf("-");
+			        printf("\n");
+			
+			        for(int i=0;i<n_Employee;i++){
+			            printf("|%-10s|%-20s|%-15s|%-15.2f|%-15d|\n",
+			                listEmployee[i].empId,
+			                listEmployee[i].name,
+			                listEmployee[i].position,
+			                listEmployee[i].baseSalary,
+			                listEmployee[i].workDay);
+			                
+			        for(int k=0;k<81;k++) printf("-");
+			        printf("\n");
+			        }
+			        printf("\n");
+			        printf("vui long an enter de quay ve muc lua chon chuc nang tang giam !!\n");
 				break;
 			}
 			case 2:{
@@ -508,6 +528,24 @@ void SortEmployeeListByBaseSalary(){
 					}
 				}
 				printf("Da sap xep giam dan thanh cong \n");
+				printf("\n----------------------------- Danh sach nhan vien ---------------------------------\n");
+		        printf("|%-10s|%-20s|%-15s|%-15s|%-15s|\n","MaNV","Ten nhan vien","Chuc vu","Luong co ban","So ngay cong");
+		        for(int k=0;k<81;k++) printf("-");
+		        printf("\n");
+		
+		        for(int i=0;i<n_Employee;i++){
+		            printf("|%-10s|%-20s|%-15s|%-15.2f|%-15d|\n",
+		                listEmployee[i].empId,
+		                listEmployee[i].name,
+		                listEmployee[i].position,
+		                listEmployee[i].baseSalary,
+		                listEmployee[i].workDay);
+		                
+		        for(int k=0;k<81;k++) printf("-");
+		        printf("\n");
+		        }
+		        printf("\n");
+		        printf("vui long an enter de quay ve muc lua chon chuc nang tang giam !!\n");
 				break;
 			}
 			case 0:{
@@ -519,26 +557,9 @@ void SortEmployeeListByBaseSalary(){
 				break;
 			} 
 		}
-		printf("\n----------------------------- Danh sach nhan vien ---------------------------------\n");
-        printf("|%-10s|%-20s|%-15s|%-15s|%-15s|\n","MaNV","Ten nhan vien","Chuc vu","Luong co ban","So ngay cong");
-        for(int k=0;k<81;k++) printf("-");
-        printf("\n");
-
-        for(int i=0;i<n_Employee;i++){
-            printf("|%-10s|%-20s|%-15s|%-15.2f|%-15d|\n",
-                listEmployee[i].empId,
-                listEmployee[i].name,
-                listEmployee[i].position,
-                listEmployee[i].baseSalary,
-                listEmployee[i].workDay);
-                
-        for(int k=0;k<81;k++) printf("-");
-        printf("\n");
-        }
-        printf("\n");
-        printf("vui long an enter de quay ve muc lua chon chuc nang tang giam !!\n");
-        getchar();
-		
+		getchar();
+		printf("An enter de ve muc lua chon chuc nang tang giam .\n");
+		}
 	} 	
 }
 
